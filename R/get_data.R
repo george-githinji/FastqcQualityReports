@@ -95,7 +95,7 @@ sequence_duplication_levels <- function(json_file){
                      percent_deduplicated = as.numeric(percent_deduplicated),
                      percent_total = as.numeric(percent_total))
 
-  dta <- dta$duplication_level <- factor(as.character( dta$duplication_level),
+  dta$duplication_level <- factor(as.character( dta$duplication_level),
                                                      levels=c("1","2","3","4","5","6","7","8","9",">10",">50",">100",">500",">1k",">5k",">10k+"))
   return(dta)
 }

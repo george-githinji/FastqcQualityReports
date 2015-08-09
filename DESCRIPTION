@@ -1,7 +1,7 @@
 Package: FastqcQualityReports
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.0.0
+Title: Plots for FastQC Read Quality with ggplot2
+Version: 0.0.1
 Author: George Githinji
 Maintainer: George Githinji <biorelated@gmail.com>
 Description: This package provides improved plots for FastQC read quality assement tool using ggplot2
@@ -13,7 +13,6 @@ Imports:
   rjson,
   dplyr,
   reshape2,
-  ggplot2
-Suggests:
+  ggplot2,
   cowplot
 
