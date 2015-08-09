@@ -1,1 +1,3 @@
+PRE-ALPHA
+
 This package provides improved plots for FastQC read quality assement tool using ggplot2. It takes a json formatted output of FastQC data.

@@ -1,7 +1,6 @@
 library(rjson)
 library(reshape2)
 library(dplyr)
-library(ggplot2)
 
 #' read a json formated fastqc data file and return a list object
 #' @param filename A path to the json formatted fastqc file
@@ -81,7 +80,6 @@ per_base_N_count <- function(json_file){
   return(dta)
 }
 
-
 #sequence duplication levels
 sequence_duplication_levels <- function(json_file){
   dta <- data.frame(matrix(unlist(json_file$`Sequence Duplication Levels`$contents), ncol = 3, byrow =T))
@@ -127,55 +125,3 @@ sequence_length_distribution <- function(json_file){
   dta[] <- lapply(dta, as.numeric)
   return(dta)
 }
-
-
-per.base.sequence.content <- per_base_sequence_content(json_data)
-
-per_base_sequence_content.m <- melt(per.base.sequence.content,id.vars = "base")
-per.base.sequence.content.plot <- ggplot(per_base_sequence_content.m, aes(x = base, y = value, fill =variable )) +
-  geom_bar(stat = "identity",width = .7) +
-  scale_fill_manual(name="",values=c("red","blue","purple","grey30")) +
-  theme(axis.text.x  = element_text(size=10),
-        legend.position="") +
-  ylab("proportion") +
-  xlab("")
-
-
-#per base N count
-per.base.N.count <- per_base_N_count(json_data)
-
-per.base.N.count.plot <- ggplot(per.base.N.count,aes(base,N_count)) +
-  geom_bar(stat = "identity",width=.7) +
-  xlab("position in read(bp)") +
-  ylab("% ambigous bases")
-
-seq.duplication.levels <- sequence_duplication_levels(json_data)
-
-seq.duplication.levels.long <- melt(seq.duplication.levels,id.vars=c("duplication_level"))
-
-seq.duplication.levels.plot <- ggplot(seq.duplication.levels.long,aes(duplication_level,value,fill=as.factor(variable))) +
-  geom_bar(position="dodge",stat="identity") +
-  scale_fill_manual(name="",labels=c("% Deduplicated","% Total"),values = c("red","blue")) +
-  ylim(0,100) +
-  theme(axis.text.x  = element_text(size=10)) +
-  xlab("sequence deduplication level") +
-  ylab("")
-
-
-json_data <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_1_fastqc.json")
-basic.info <- basic_stats(json_data)
-
-per.sequence.quality.scores <- per_sequence_quality_scores(json_data)
-
-per.base.sequence.quality <- per_base_sequence_quality(json_data)
-
-per.sequence.quality.scores.plot <- ggplot(per.sequence.quality.scores,aes(quality,count)) +
-  geom_bar(stat="identity",width=.5)
-
-per.base.sequence.quality.plot <- ggplot(per.base.sequence.quality,aes(base,mean)) +
-  geom_smooth(colour="red",method="loess",se=F) +
-  geom_smooth(aes(base,median),colour="blue",method="loess",se=F) +
-  ylim(1,40) +
-  xlim(1,150) +
-  ylab("phred scores")
-
