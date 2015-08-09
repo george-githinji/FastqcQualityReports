@@ -1,4 +1,4 @@
-.Rproj.user
-.Rhistory
-.RData
-.gitignore
+*.Rproj.user
+*.Rhistory
+*.RData
+*.gitignore
