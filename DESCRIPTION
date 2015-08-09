@@ -1,0 +1,19 @@
+Package: FastqcQualityReports
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.0.0
+Author: George Githinji
+Maintainer: George Githinji <biorelated@gmail.com>
+Description: This package provides improved plots for FastQC read quality assement tool using ggplot2
+              It takes a json formatted output of FastQC data. FastQC data can be coverted
+              to json format using the crimson python library (https://github.com/bow/crimson)
+License: MIT
+LazyData: TRUE
+Imports:
+  rjson,
+  dplyr,
+  reshape2,
+  ggplot2
+Suggests:
+  cowplot
+
