@@ -25,7 +25,7 @@ plot.per.base.N.count <- function(data_frame){
 
 plot.seq.duplication.levels <- function(data_frame){
   plot <- ggplot(melt(data_frame,id.vars=c("duplication_level")),aes(duplication_level,value,fill=as.factor(variable))) +
-    geom_bar(position="dodge",stat="identity") +
+    geom_bar(position="dodge",stat="identity",width=.7) +
     scale_fill_manual(name="",labels=c("% Deduplicated","% Total"),values = c("red","blue")) +
     ylim(0,100) +
     theme(axis.text.x  = element_text(size=10)) +
@@ -55,17 +55,43 @@ plot.per.base.sequence.quality <- function(data_frame){
 
 
 #examples
-json_data <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_1_fastqc.json")
-basic.info <- basic_stats(json_data)
+json_data1 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_1_fastqc/ERR303259_1_fastqc.json")
+json_data2 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_2_fastqc/ERR303259_2_fastqc.json")
 
-plot.per.base.sequence.quality(per_base_sequence_quality(json_data))
+json_data1 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR438932_1_fastqc/ERR438932_1_fastqc.json")
+json_data2 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR438932_2_fastqc/ERR438932_2_fastqc.json")
 
-plot.per.sequence.quality.scores(per_sequence_quality_scores(json_data))
+basic.info1 <- basic_stats(json_data1)
+basic.info2 <- basic_stats(json_data2)
+file1_name <- tools::file_path_sans_ext(basic.info1$file_name)
+file2_name <- tools::file_path_sans_ext(basic.info2$file_name)
 
-plot.per.base.sequence.quality(per_base_sequence_quality(json_data))
 
-plot.per.base.sequence.content(per_base_sequence_content(json_data))
+plot_grid(
+  plot.per.base.sequence.quality(per_base_sequence_quality(json_data1)) + ggtitle(file1_name),
+  plot.per.base.sequence.quality(per_base_sequence_quality(json_data2)) + ggtitle(file2_name)
+)
 
-plot.per.base.N.count(per_base_N_count(json_data))
+plot_grid(
+  plot.per.sequence.quality.scores(per_sequence_quality_scores(json_data1)) + ggtitle(file1_name),
+  plot.per.sequence.quality.scores(per_sequence_quality_scores(json_data2)) + ggtitle(file2_name)
+)
 
-plot.seq.duplication.levels(sequence_duplication_levels(json_data))
+plot_grid(
+  plot.per.base.sequence.content(per_base_sequence_content(json_data1)) + ggtitle(file1_name),
+  plot.per.base.sequence.content(per_base_sequence_content(json_data2)) + ggtitle(file2_name),
+  nrow = 2
+)
+
+plot_grid(
+  plot.per.base.N.count(per_base_N_count(json_data1)) + ggtitle(file1_name),
+  plot.per.base.N.count(per_base_N_count(json_data2)) + ggtitle(file2_name),
+  nrow=2
+)
+
+plot_grid(
+  plot.seq.duplication.levels(sequence_duplication_levels(json_data1)) + ggtitle(file1_name),
+  plot.seq.duplication.levels(sequence_duplication_levels(json_data2)) + ggtitle(file2_name),
+  nrow = 2
+)
+
