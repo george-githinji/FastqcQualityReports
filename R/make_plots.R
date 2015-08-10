@@ -56,6 +56,7 @@ plot.per.base.sequence.quality <- function(data_frame){
 }
 
 
+#examples for paired end reads
 json_data1 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_1_fastqc/ERR303259_1_fastqc.json")
 json_data2 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_2_fastqc/ERR303259_2_fastqc.json")
 
@@ -84,6 +85,12 @@ json_data2 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR438932_2_fastqc/ERR4389
     plot.per.base.sequence.content(per_base_sequence_content(json_data2)) + ggtitle(file2_name),
     nrow = 2
   )
+
+  #The blue line represents the counts of all the sequences that are duplicated at a given rate.
+  #The percentage is computed relative to the total number of reads.
+
+  #The red line represents the number of distinct sequences that are duplicated at a given rate.
+  #The percentage is computed relative to the total number of distinct sequences in the data.
 
   plot_grid(
     plot.per.base.N.count(per_base_N_count(json_data1)) + ggtitle(file1_name),
