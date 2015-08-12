@@ -36,6 +36,9 @@ basic_stats <- function(jsonlist){
 #get the per base sequence quality
 #' This function returns the per base sequence quality scores
 #' @param
+#' @return A dataframe
+#' @examples
+#' per_base_sequence_quality(jsonlist)
 per_base_sequence_quality <- function(json_file){
   dta <- data.frame(matrix(unlist(json_file$`Per base sequence quality`$contents), ncol = 7, byrow =T))
   dta <- dta %>%
@@ -53,7 +56,11 @@ per_base_sequence_quality <- function(json_file){
   return(dta)
 }
 
-#get per base sequence content
+
+#' This function returns the per base sequence information
+#' @param
+#' @return A dataframe
+#' @examples
 per_base_sequence_content <- function(json_file){
   dta <- data.frame(matrix(unlist(json_file$`Per base sequence content`$contents),ncol = 5,byrow =T))
   dta <- dta%>%
