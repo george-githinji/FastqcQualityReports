@@ -3,11 +3,13 @@ require(reshape2)
 source("R/get_data.R")
 
 plot.per.base.sequence.content <- function(data_frame){
-  plot <- ggplot(melt(data_frame,id.vars="base"), aes(x = base, y = value, fill =variable )) +
-    geom_bar(stat = "identity",width = .7) +
-    scale_fill_manual(name="",values=c("red","blue","purple","grey30")) +
+  plot <- ggplot(melt(data_frame,id.vars="base"), aes(x = base, y = value, colour =variable )) +
+    geom_line(aes(group=variable)) +
+    #geom_bar(stat = "identity",width = .7) +
+    scale_colour_manual(name="bases",values=c("red","blue","green","grey30")) +
     theme(axis.text.x  = element_text(size=10),
           legend.position="") +
+    ylim(0,100) +
     ylab("proportion") +
     xlab("")
 
