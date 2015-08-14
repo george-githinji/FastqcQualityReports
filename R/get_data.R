@@ -75,6 +75,12 @@ per_base_sequence_content <- function(json_file){
   return(dta)
 }
 
+
+#' This function returns the count of ambiguous bases per position
+#' @param a jsonfile
+#' @return A dataframe of base position and count
+#' @example
+#' per_base_N_count(jsonfile)
 per_base_N_count <- function(json_file){
   dta <- data.frame(matrix(unlist(json_file$`Per base N content`$contents), ncol = 2, byrow =T))
   dta <- dta %>%
@@ -87,7 +93,13 @@ per_base_N_count <- function(json_file){
   return(dta)
 }
 
+
 #sequence duplication levels
+#' Returns the duplication information as provided FastQC
+#' @param
+#' @return A 3 column dataframe
+#' @example
+#'sequence_duplication_leves(jsonfile)
 sequence_duplication_levels <- function(json_file){
   dta <- data.frame(matrix(unlist(json_file$`Sequence Duplication Levels`$contents), ncol = 3, byrow =T))
   dta <- dta %>%
