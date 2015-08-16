@@ -106,20 +106,24 @@ sequence_duplication_levels <- function(json_file){
     transmute(
       duplication_level = X1,
       percent_deduplicated  = X2,
-      percent_total = X3
-    )
+      percent_total = X3)
   dta[] <- lapply(dta, as.character)
   dta   <- transmute(dta,
                      duplication_level = duplication_level,
                      percent_deduplicated = as.numeric(percent_deduplicated),
                      percent_total = as.numeric(percent_total))
-
   dta$duplication_level <- factor(as.character( dta$duplication_level),
                                                      levels=c("1","2","3","4","5","6","7","8","9",">10",">50",">100",">500",">1k",">5k",">10k+"))
   return(dta)
 }
 
 #sequence quality scores
+#' Returns the per sequence quality scores
+#' @param
+#' @return a dataframe
+#' @example
+#' per_sequence_quality_scores(jsonfile)
+#'
 per_sequence_quality_scores <- function(json_file){
   dta <- data.frame(matrix(unlist(json_file$`Per sequence quality scores`$contents), ncol = 2, byrow =T))
   dta <- dta %>%
@@ -132,7 +136,12 @@ per_sequence_quality_scores <- function(json_file){
   return(dta)
 }
 
-# length distribution
+# sequence_length_distribution
+#' Returns the sequence_length_distribution
+#' @param
+#' @return a dataframe
+#' @example
+#' sequence_length_distribution(jsonfile)
 sequence_length_distribution <- function(json_file){
   dta <- data.frame(matrix(unlist(json_file$`Sequence Length Distribution`$contents), ncol = 2, byrow =T))
   dta <- dta %>%
