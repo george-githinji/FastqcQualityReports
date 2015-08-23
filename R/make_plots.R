@@ -1,6 +1,7 @@
 require(cowplot)
 require(reshape2)
-source("R/get_data.R")
+
+source("/Users/george/Code/R/FastqcQualityReports/R/get_data.R")
 
 plot.per.base.sequence.content <- function(data_frame){
   plot <- ggplot(melt(data_frame,id.vars="base"), aes(x = base, y = value, colour =variable )) +
@@ -18,7 +19,8 @@ plot.per.base.sequence.content <- function(data_frame){
 
 plot.per.base.N.count <- function(data_frame){
   plot <- ggplot(data_frame,aes(base,N_count)) +
-    geom_bar(stat = "identity",width=.7,fill="red") +
+    geom_bar(stat = "identity",width=.5,fill="red") +
+    ylim(0,1) +
     xlab("position in read(bp)") +
     ylab("% ambigous bases")
 
@@ -41,7 +43,10 @@ plot.seq.duplication.levels <- function(data_frame){
 
 plot.per.sequence.quality.scores <- function(data_frame){
   plot <- ggplot(data_frame,aes(quality,count)) +
-    geom_bar(stat="identity",width=.5)
+    #geom_bar(stat="identity",width=.4) +
+    geom_point(colour="red") +
+    geom_line() +
+  xlim(0,40)
 
   return(plot)
 }
@@ -57,54 +62,14 @@ plot.per.base.sequence.quality <- function(data_frame){
   return(plot)
 }
 
-
-#examples for paired end reads
-json_data1 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_1_fastqc/ERR303259_1_fastqc.json")
-json_data2 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR303259_2_fastqc/ERR303259_2_fastqc.json")
-
-json_data1 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR438932_1_fastqc/ERR438932_1_fastqc.json")
-json_data2 <- read.fastqc("~/RSV_analysis/test/fastqc/ERR438932_2_fastqc/ERR438932_2_fastqc.json")
-
-
-  basic.info1 <- basic_stats(json_data1)
-  basic.info2 <- basic_stats(json_data2)
-  file1_name <- tools::file_path_sans_ext(basic.info1$file_name)
-  file2_name <- tools::file_path_sans_ext(basic.info2$file_name)
-
-
-  plot_grid(
-    plot.per.base.sequence.quality(per_base_sequence_quality(json_data1)) + ggtitle(file1_name),
-    plot.per.base.sequence.quality(per_base_sequence_quality(json_data2)) + ggtitle(file2_name)
-  )
-
-  plot_grid(
-    plot.per.sequence.quality.scores(per_sequence_quality_scores(json_data1)) + ggtitle(file1_name),
-    plot.per.sequence.quality.scores(per_sequence_quality_scores(json_data2)) + ggtitle(file2_name)
-  )
-
-  plot_grid(
-    plot.per.base.sequence.content(per_base_sequence_content(json_data1)) + ggtitle(file1_name),
-    plot.per.base.sequence.content(per_base_sequence_content(json_data2)) + ggtitle(file2_name),
-    nrow = 2
-  )
-
-  #The blue line represents the counts of all the sequences that are duplicated at a given rate.
-  #The percentage is computed relative to the total number of reads.
-
-  #The red line represents the number of distinct sequences that are duplicated at a given rate.
-  #The percentage is computed relative to the total number of distinct sequences in the data.
-
-  plot_grid(
-    plot.per.base.N.count(per_base_N_count(json_data1)) + ggtitle(file1_name),
-    plot.per.base.N.count(per_base_N_count(json_data2)) + ggtitle(file2_name),
-    nrow=2
-  )
-
-  plot_grid(
-    plot.seq.duplication.levels(sequence_duplication_levels(json_data1)) + ggtitle(file1_name),
-    plot.seq.duplication.levels(sequence_duplication_levels(json_data2)) + ggtitle(file2_name),
-    nrow = 2
-  )
-
-
-
+plot.seq.length.distribution <- function(data_frame){
+  plot <- ggplot(data_frame,aes(factor(length),count)) +
+    geom_bar(width=.5,stat="identity",fill="grey70") +
+    #geom_freqpoly(stat = "identity") +
+   # scale_x_discrete(breaks=seq(0,150,50)) +
+    #xlim(0,150) +
+    ylab("count") +
+    xlab("length") 
+  
+  return(plot)
+}
